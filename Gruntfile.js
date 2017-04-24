@@ -1,7 +1,10 @@
 module.exports = function(grunt) {
 
+  require('jit-grunt')(grunt);
+
   // Project configuration.
   grunt.initConfig({
+
     pkg: grunt.file.readJSON('package.json'),
     uglify: {
       options: {
@@ -21,3 +24,4 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['uglify']);
 
 };
+
