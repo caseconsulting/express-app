@@ -1,6 +1,8 @@
-* Sample Starter App
+# Sample Starter App
 
-** Installation
+1. [Installation](#installation)
+
+## Installation
 
 ```sh
 npm install --global yarn
