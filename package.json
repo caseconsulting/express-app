@@ -16,9 +16,11 @@
     "grunt-contrib-uglify": "^2.3.0",
     "grunt-env": "^0.4.4",
     "jit-grunt": "^0.10.0",
-    "mocha": "^3.2.0",
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "istanbul": "^0.4.5",
+    "mocha": "^3.3.0"
+  }
 }
