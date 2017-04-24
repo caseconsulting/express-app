@@ -6,10 +6,13 @@
 ## Installation
 
 ```sh
+npm install --global grunt-cli
+npm install --global bower
 npm install --global yarn
 git clone git@github.com:caseconsulting/express-starter-app.git
 cd express-starter-app
 yarn install
+bower install
 ```
 
 ## Running
@@ -17,7 +20,7 @@ yarn install
 ### Locally
 
 ```sh
-./bin/www 
+./bin/www
 
 ```
 open a browser to http://localhost:3000/
