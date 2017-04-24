@@ -20,7 +20,7 @@ bower install
 ### Locally
 
 ```sh
-./bin/www
+yarn start
 
 ```
 open a browser to http://localhost:3000/
