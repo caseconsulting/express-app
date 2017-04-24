@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%= title %></title>
     <link rel='stylesheet' href='/lib/bootstrap/dist/css/bootstrap.min.css' />
-    <link rel='stylesheet' href='/lib/bootstrap/dist/css/bootstrap-theme.min.css' />
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
@@ -35,10 +34,12 @@
       </div>
     </nav>
     <%- body %>
-    <hr/>
-    <footer>
-      <p>&copy; 2017 Case Consulting, Inc </p>
-    </footer>
+    <div class="container">
+      <hr>
+      <footer>
+        <p>&copy; 2017 Case Consulting, Inc </p>
+      </footer>
+    </div>
     <script src='/lib/jquery/dist/jquery.min.js'></script>
     <script src='/lib/bootstrap/dist/js/bootstrap.js'></script>
   </body>
