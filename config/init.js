@@ -15,8 +15,8 @@ module.exports = function() {
 	 * Before we begin, lets set the environment variable
 	 * We'll Look for a valid NODE_ENV variable and if one cannot be found load the development NODE_ENV
 	 */
-  console.log(glob.sync('./config/env/*'));
-  console.log(process.env);
+
+  require('dotenv').config();
 
 	var environmentFiles = glob.sync('./config/env/' + process.env.NODE_ENV + '.js');
 
