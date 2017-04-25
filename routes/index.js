@@ -4,7 +4,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express Starter App' });
+  res.render('index');
 });
 
 router.post('/login', passport.authenticate('local', {
