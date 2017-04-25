@@ -55,13 +55,6 @@ module.exports = function(grunt) {
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
-  	// Lint task(s).
-	grunt.registerTask('lint', ['jshint', 'csslint']);
-	grunt.registerTask('lint:tests', ['jshint:allTests']);
-
-	// Build task(s).
-	grunt.registerTask('build', ['lint', 'loadConfig', 'cssmin', 'ngAnnotate', 'uglify', 'closure-compiler', 'html2js:main', 'html2js:forms']);
-
 
   // Default task(s).
   grunt.registerTask('default', ['uglify']);
