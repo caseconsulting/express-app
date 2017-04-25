@@ -24,6 +24,7 @@
     "grunt-contrib-uglify": "^2.3.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-env": "^0.4.4",
+    "inquirer": "^3.0.6",
     "jit-grunt": "^0.10.0",
     "jshint": "^2.9.4",
     "lodash": "^4.17.4",
