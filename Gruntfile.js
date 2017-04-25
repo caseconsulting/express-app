@@ -55,6 +55,14 @@ module.exports = function(grunt) {
     grunt.log.writeln(target + ': ' + filepath + ' has ' + action);
   });
 
+  grunt.loadNpmTasks('grunt-contrib-watch');
+
+  // Load the plugin that provides the "uglify" task.
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+
+  // load env
+  grunt.loadNpmTasks('grunt-env');
+
   grunt.option('force',true);
 
 	// A Task for loading the configuration object
@@ -64,15 +72,6 @@ module.exports = function(grunt) {
 		console.log(config);
 
 	});
-
-  grunt.loadNpmTasks('grunt-contrib-watch');
-
-  // Load the plugin that provides the "uglify" task.
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-
-  // load env
-  grunt.loadNpmTasks('grunt-env');
-
 
   // Default task(s).
   grunt.registerTask('default', ['loadConfig']);
