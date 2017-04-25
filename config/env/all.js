@@ -24,8 +24,8 @@ module.exports = {
 
 	templateEngine: 'ejs',
 
-	disableClusterMode: (process.env.DISABLE_CLUSTER_MODE === "TRUE"),
 	baseUrl: '',
+
 	tempUserCollection: 'temporary_users',
 
 	// The secret should be set to a non-guessable string that
