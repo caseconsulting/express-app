@@ -1,7 +1,12 @@
 # Sample Starter App
 
+1. [Prerequisites](#prerequisites)
 1. [Installation](#installation)
-2. [Running](#running)
+1. [Running](#running)
+
+## Prerequisites
+
+[Install MongoDB](INSTALL.md)
 
 ## Installation
 
