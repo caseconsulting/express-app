@@ -9,6 +9,9 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var fs = require('fs');
 var sassMiddleware = require('node-sass-middleware');
+var session = require('express-session');
+var MongoStore = require('connect-mongo');
+var flash = require('connect-flash');
 
 //Load ENV vars from .env
 if ((process.env.NODE_ENV || 'development') === 'development') {
@@ -56,6 +59,21 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Express MongoDB session storage
+
+app.use(session({
+	secret: config.sessionSecret,
+	cookie: config.sessionCookie,
+	name: config.sessionName
+}));
+
+app.use(flash());
+
+// use passport session
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(sassMiddleware({
   src: path.join(__dirname, 'public'),
   dest: path.join(__dirname, 'public'),
