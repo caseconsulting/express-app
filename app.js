@@ -5,12 +5,43 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+var passport = require('passport');
+var fs = require('fs');
 var sassMiddleware = require('node-sass-middleware');
+
+//Load ENV vars from .env
+if ((process.env.NODE_ENV || 'development') === 'development') {
+	require('dotenv').config();
+}
+
+var config = require('./config/config'),
+    chalk = require('chalk')
+
+// Bootstrap db connection
+var db = mongoose.connect(config.db.uri, config.db.options, function (err) {
+	if (err) {
+		console.error(chalk.red('Could not connect to MongoDB!'));
+		console.log(chalk.red(err));
+	}
+});
+mongoose.connection.on('error', function (err) {
+	console.error(chalk.red('MongoDB connection error: ' + err));
+	process.exit(-1);
+});
+
+// Globbing model files
+config.getGlobbedFiles('./models/**/*.js').forEach(function(modelPath) {
+	require(path.resolve(modelPath));
+});
+
+require('./config/passport')();
 
 var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

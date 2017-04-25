@@ -23,21 +23,30 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
     watch: {
-	    jshint: {
-	    	all: {
-	    		src: watchFiles.clientJS.concat(watchFiles.serverJS),
-	    		options: {
-	    			jshintrc: true
-	    		}
-	    	},
-	    	allTests: {
-	    		src: watchFiles.allTests,
-	    		options: {
-	    			jshintrc: true
-	    		}
-	    	}
-	    }
+      env: {
+        test: {
+          NODE_ENV: 'test',
+          src: '.env'
+        },
+        production: {
+          NODE_ENV: 'production',
+          src: '.env'
+        },
+        dev: {
+          NODE_ENV: 'development',
+          src: '.env'
+        }
+      },
+      execute: {
+        target: {
+          src: ['./bin/setup.js']
+        }
+      }
     }
+  });
+
+  grunt.event.on('watch', function(action, filepath, target) {
+    grunt.log.writeln(target + ': ' + filepath + ' has ' + action);
   });
 
   grunt.option('force',true);
@@ -50,14 +59,21 @@ module.exports = function(grunt) {
 
 	});
 
-
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
 
+  // load env
+  grunt.loadNpmTasks('grunt-env');
+
 
   // Default task(s).
-  grunt.registerTask('default', ['uglify']);
+  grunt.registerTask('default', ['env', 'loadConfig']);
+
+  grunt.registerTask('dev', ['env:dev']);
+
+  grunt.registerTask('setup', ['execute']);
 
 };
 
