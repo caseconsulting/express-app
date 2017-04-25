@@ -3,5 +3,7 @@ public/bower_components
 public/lib
 **.sw*
 npm-debug.log
-
+access.log
+api_keys.js
 .DS_Store
+*.env

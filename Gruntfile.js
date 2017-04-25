@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(grunt) {
 
   require('jit-grunt')(grunt);
@@ -20,19 +22,46 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     pkg: grunt.file.readJSON('package.json'),
-    uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-      },
-      build: {
-        src: 'src/<%= pkg.name %>.js',
-        dest: 'build/<%= pkg.name %>.min.js'
-      }
+    watch: {
+	    jshint: {
+	    	all: {
+	    		src: watchFiles.clientJS.concat(watchFiles.serverJS),
+	    		options: {
+	    			jshintrc: true
+	    		}
+	    	},
+	    	allTests: {
+	    		src: watchFiles.allTests,
+	    		options: {
+	    			jshintrc: true
+	    		}
+	    	}
+	    }
     }
   });
 
+  grunt.option('force',true);
+
+	// A Task for loading the configuration object
+	grunt.task.registerTask('loadConfig', 'Task that loads the config into a grunt option.', function() {
+		require('./config/init')();
+		var config = require('./config/config');
+		console.log(config);
+
+	});
+
+
+
   // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-uglify');
+
+  	// Lint task(s).
+	grunt.registerTask('lint', ['jshint', 'csslint']);
+	grunt.registerTask('lint:tests', ['jshint:allTests']);
+
+	// Build task(s).
+	grunt.registerTask('build', ['lint', 'loadConfig', 'cssmin', 'ngAnnotate', 'uglify', 'closure-compiler', 'html2js:main', 'html2js:forms']);
+
 
   // Default task(s).
   grunt.registerTask('default', ['uglify']);
