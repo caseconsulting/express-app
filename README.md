@@ -22,8 +22,8 @@ bower install
 
 create your initial user account
 
-```
-node ./bin/setup.js
+```sh
+grunt execute
 ```
 
 add to your .env file. [see the sample](env.example)
@@ -33,8 +33,7 @@ add to your .env file. [see the sample](env.example)
 ### Locally
 
 ```sh
-yarn start
-
+grunt run:server
 ```
 open a browser to http://localhost:3000/
 

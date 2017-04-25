@@ -22,27 +22,33 @@ module.exports = function(grunt) {
   grunt.initConfig({
 
     pkg: grunt.file.readJSON('package.json'),
-    watch: {
-      env: {
-        test: {
-          NODE_ENV: 'test',
-          src: '.env'
-        },
-        production: {
-          NODE_ENV: 'production',
-          src: '.env'
-        },
-        dev: {
-          NODE_ENV: 'development',
-          src: '.env'
-        }
+    watch: {},
+    env: {
+      test: {
+        NODE_ENV: 'test',
+        src: '.env'
       },
-      execute: {
-        target: {
-          src: ['./bin/setup.js']
-        }
+      production: {
+        NODE_ENV: 'production',
+        src: '.env'
+      },
+      dev: {
+        NODE_ENV: 'development',
+        src: '.env'
+      }
+    },
+    execute: {
+      target: {
+        src: ['./bin/setup.js']
+      }
+    },
+    run: {
+      server: {
+        cmd: 'yarn',
+        args: ['start']
       }
     }
+
   });
 
   grunt.event.on('watch', function(action, filepath, target) {
@@ -74,6 +80,8 @@ module.exports = function(grunt) {
   grunt.registerTask('dev', ['env:dev']);
 
   grunt.registerTask('setup', ['execute']);
+
+  grunt.registerTask('server', [ 'server']);
 
 };
 
