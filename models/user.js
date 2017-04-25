@@ -160,7 +160,7 @@ UserSchema.methods.hashPassword = function(password) {
 	}
 
 	if (password) {
-		return crypto.pbkdf2Sync(password, new Buffer(this.salt, 'base64'), 10000, 128).toString('base64');
+		return crypto.pbkdf2Sync(password, new Buffer(this.salt, 'base64'), 10000, 128, 'sha1').toString('base64');
 	} else {
 		return password;
 	}
