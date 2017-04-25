@@ -26,7 +26,7 @@ create your initial user account
 node ./bin/setup.js
 ```
 
-create your .env file. [see the sample](env.example)
+add to your .env file. [see the sample](env.example)
 
 ## Running
 

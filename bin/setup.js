@@ -43,6 +43,16 @@ var questions = [
 	},
 	{
 		type: 'input',
+		name: 'firstName',
+		message: 'What should be the firstName for your admin account?'
+	},
+	{
+		type: 'input',
+		name: 'lastName',
+		message: 'What should be the lastName for your admin account?'
+	},
+	{
+		type: 'input',
 		name: 'username',
 		message: 'What should be the username for your admin account?'
 	},
@@ -63,24 +73,27 @@ if(!fs.existsSync('./\.env')) {
 		if (confirmAns['shouldContinue']) {
 
 			inquirer.prompt(questions.slice(1)).then(function (answers) {
-				answers['NODE_ENV'] = 'production';
 
 				var email = answers['email'];
 				var username = answers['username'];
 				var pass = answers['password'];
+				var firstName = answers['firstName'];
+				var lastName = answers['lastName'];
 				delete answers['email'];
 				delete answers['password'];
+				delete answers['username'];
+				delete answers['firstName'];
+				delete answers['lastName'];
 
 				envfile.stringify(answers, function (err, str) {
-					fs.outputFile('./\.env', str, function (fileErr) {
-						if (fileErr) {
-							return console.error(chalk.red(fileErr));
-						}
-						console.log(chalk.green('Successfully created .env file'));
-					});
-					var user = new User({
-						firstName: 'Admin',
-						lastName: 'Account',
+
+					fs.writeFileSync('./\.env', str);
+
+			  	console.log(chalk.green('Successfully created .env file'));
+
+          var user = new User({
+						firstName: firstName,
+						lastName: lastName,
 						email: email,
 						username: username,
 						password: pass,
@@ -88,15 +101,16 @@ if(!fs.existsSync('./\.env')) {
 						roles: ['admin', 'user']
 					});
 
-					user.save(function (userSaveErr) {
+					var promise = user.save(function (user, err) {
 						if (err) {
-							return console.error(chalk.red(userSaveErr));
+							return console.error(chalk.red(err));
 						}
 
 						console.log(chalk.green('Successfully created user'));
 
 						console.log(chalk.green('Express Starter App is configured!'));
-						process.exit(1);
+
+					  process.exit(1);
 					});
 				});
 			});
