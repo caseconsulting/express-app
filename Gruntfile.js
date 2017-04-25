@@ -69,7 +69,7 @@ module.exports = function(grunt) {
 
 
   // Default task(s).
-  grunt.registerTask('default', ['env', 'loadConfig']);
+  grunt.registerTask('default', ['loadConfig']);
 
   grunt.registerTask('dev', ['env:dev']);
 
