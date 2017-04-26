@@ -9,14 +9,11 @@ var passport = require('passport'),
 	path = require('path'),
 	config = require('./config');
 
-/**
- * Module init function.
- */
-module.exports = function() {
-	// Serialize sessions
-	passport.serializeUser(function(user, done) {
-		done(null, user.id);
-	});
+
+// Serialize sessions
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
 
 passport.deserializeUser(function (id, done) {
   User.findById(id, function (err, user) {
@@ -24,6 +21,10 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
+/**
+ * Module init function.
+ */
+module.exports = function() {
 
 	// Initialize strategies
 	config.getGlobbedFiles('./config/strategies/**/*.js').forEach(function(strategy) {
