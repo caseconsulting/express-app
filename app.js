@@ -3,6 +3,8 @@
 
 var express         = require('express');
 var expressLayouts  = require('express-ejs-layouts');
+var flash           = require('connect-flash');
+var session         = require('express-session');
 var favicon         = require('serve-favicon');
 var path            = require('path');
 var logger          = require('morgan');
@@ -12,9 +14,7 @@ var mongoose        = require('mongoose');
 var passport        = require('passport');
 var fs              = require('fs');
 var sassMiddleware  = require('node-sass-middleware');
-var session         = require('express-session');
 var MongoStore      = require('connect-mongo');
-var flash           = require('connect-flash');
 var debug           = require('debug')('express-starter-app');
 
 //Load ENV vars from .env

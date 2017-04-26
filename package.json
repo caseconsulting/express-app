@@ -20,6 +20,7 @@
     "envfile": "^2.1.1",
     "express": "~4.15.2",
     "express-ejs-layouts": "^2.3.0",
+    "express-flash": "^0.0.2",
     "express-messages": "^1.0.1",
     "express-session": "^1.15.2",
     "fs-extra": "^2.1.2",

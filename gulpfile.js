@@ -172,7 +172,6 @@ gulp.task('nodemon', ['build'], function (cb) {
  */
 
 gulp.task('default', function () {
-  gulp.watch(paths.less, ['styles']);
   gulp.watch(paths.js, ['scripts']);
   gulp.watch(paths.lint, ['lint', 'jscs']);
   gulp.watch('views/**/*.jade').on('change', plugins.refresh.changed);

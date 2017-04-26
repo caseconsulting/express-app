@@ -13,7 +13,8 @@ module.exports = function () {
 			usernameField: 'username',
 			passwordField: 'password'
 		},
-		function (username, password, done) {
+		function (req, username, password, done) {
+      console.log(req);
 			User.findOne({
 				$or: [
 					{'username': username},
