@@ -57,11 +57,16 @@ app.set('view engine', 'jade');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+
+// use passport session
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(cookieParser());
+
 app.use(bodyParser.json());
 app.use(expressValidator());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
-app.use(cookieParser());
 
 // Express MongoDB session storage
 
@@ -81,10 +86,6 @@ fs.readdirSync('./controllers').forEach(function (file) {
   }
 });
 
-
-// use passport session
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Body parsing middleware supporting
 // JSON, urlencoded, and multipart requests.
