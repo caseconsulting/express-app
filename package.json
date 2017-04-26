@@ -31,6 +31,7 @@
     "grunt-env": "^0.4.4",
     "grunt-execute": "^0.2.2",
     "grunt-run": "^0.6.0",
+    "gulp-changed": "^3.0.0",
     "inquirer": "^3.0.6",
     "jit-grunt": "^0.10.0",
     "jshint": "^2.9.4",
@@ -45,7 +46,26 @@
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-header": "^1.8.8",
+    "gulp-jscs": "^4.0.0",
+    "gulp-jshint": "^2.0.4",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-open": "^2.0.0",
+    "gulp-refresh": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-size": "^2.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^2.1.2",
+    "gulp-util": "^3.0.8",
     "istanbul": "^0.4.5",
-    "mocha": "^3.3.0"
+    "jshint-stylish": "^2.2.1",
+    "mocha": "^3.3.0",
+    "run-sequence": "^1.2.2",
+    "terminus": "^1.1.0"
   }
 }

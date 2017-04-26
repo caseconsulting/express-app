@@ -11,7 +11,7 @@
 ## Installation
 
 ```sh
-npm install --global grunt-cli
+npm install --global gulp-cli
 npm install --global bower
 npm install --global yarn
 git clone git@github.com:caseconsulting/express-starter-app.git
@@ -23,7 +23,7 @@ bower install
 create your initial user account
 
 ```sh
-grunt execute
+grunt setup
 ```
 
 add to your .env file. [see the sample](env.example)
@@ -33,9 +33,8 @@ add to your .env file. [see the sample](env.example)
 ### Locally
 
 ```sh
-grunt run:server
+gulp
 ```
-open a browser to http://localhost:3000/
 
 ### Production
 
