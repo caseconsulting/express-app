@@ -35,7 +35,7 @@ passport.deserializeUser(function (id, done) {
  * Login Required middleware.
  */
 
-exports.isAuthenticated = function (req, res, next) {
+module.exports.isAuthenticated = function (req, res, next) {
   // Is the user authenticated?
   if (req.isAuthenticated()) {
     // Does the user have enhanced security enabled?
