@@ -15,6 +15,7 @@ var sassMiddleware  = require('node-sass-middleware');
 var session         = require('express-session');
 var MongoStore      = require('connect-mongo');
 var flash           = require('connect-flash');
+var debug           = require('debug')('express-starter-app');
 
 //Load ENV vars from .env
 if ((process.env.NODE_ENV || 'development') === 'development') {
@@ -48,6 +49,9 @@ var users = require('./routes/users');
 
 var app = express();
 
+// set up debugging
+app.locals.pretty = true;
+app.locals.compileDebug=true;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
