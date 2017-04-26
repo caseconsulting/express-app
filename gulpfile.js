@@ -162,7 +162,7 @@ gulp.task('nodemon', ['build'], function (cb) {
   })
   .on('restart', function () {
     setTimeout(function () {
-      plugins.reload()
+      plugins.refresh.reload()
     }, 3000);  // wait for restart
   });
 });

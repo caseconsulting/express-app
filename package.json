@@ -23,6 +23,7 @@
     "express-messages": "^1.0.1",
     "express-session": "^1.15.2",
     "fs-extra": "^2.1.2",
+    "grunt": "^1.0.1",
     "inquirer": "^3.0.6",
     "lodash": "^4.17.4",
     "main-bower-files": "^2.13.1",
