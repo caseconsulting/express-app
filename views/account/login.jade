@@ -1,0 +1,53 @@
+extends ../layouts/layout
+
+block head
+  title Express Starter App &middot; Sign In
+
+block content
+  .container
+    .row
+      .col-sm-6.col-sm-offset-3
+        br
+        br
+        form(method='POST')
+          input(type='hidden', name='_csrf', value=_csrf)
+          legend Sign In
+          .form-group
+            panel-group
+              .panel.panel-default
+                .panel-heading.panel-button
+                  p.panel-title
+                    | Use your email and password&nbsp;
+                  .panel-body
+                    .form-group
+                      label.sr-only(for='email') Email:
+                      input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus=true, required)
+                    .form-group
+                      label.sr-only(for='password') Password:
+
+                      //- Set the autocomplete attribute of any password fields in any form to "off".
+                      //- You can keep other aspects of the form autocompletable, but force the user
+                      //- to retype his/her own password, helping ensure they are who they say they are.
+
+                      input.form-control(type='password', name='password', id='password', placeholder='Password', autocomplete='off', required)
+                    .form-group
+                      button.btn.btn-primary(type='submit')
+                        i.fa.fa-unlock-alt
+                        | &nbsp;Login
+                      | &nbsp;
+                      a.btn.btn-link(href='/forgot') Forget your password?
+            p No Account?&nbsp;&nbsp;
+              a.btn.btn-success(href='signup')
+                i.fa.fa-check
+                | &nbsp;Sign Up
+
+        hr
+
+block scripts
+  script.
+    $(document).ready(function() {
+      if ( #{tooManyAttempts} === true ) {
+        $("input").prop('disabled', true);
+        $("button").prop('disabled', true);
+      }
+    });

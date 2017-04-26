@@ -1,198 +1,152 @@
 'use strict';
 
 /**
- * Module dependencies.
+ * Module Dependencies
  */
-var mongoose = require('mongoose'),
-	Schema = mongoose.Schema,
-	crypto = require('crypto'),
-	config = require('../config/config'),
-	fs = require('fs-extra'),
-	mUtilities = require('mongoose-utilities'),
-	path = require('path'),
-	querystring = require('querystring');
 
-
+var bcrypt    = require('bcrypt-nodejs');
+var crypto    = require('crypto');
+var mongoose  = require('mongoose');
 
 /**
- * A Validation function for local strategy properties
+ * Define User Schema
  */
-var validateLocalStrategyProperty = function(property) {
-	var propHasLength;
-	if (property) {
-		propHasLength = !!property.length;
-	} else {
-		propHasLength = false;
-	}
 
-	return ((this.provider !== 'local' && !this.updated) || propHasLength);
-};
+// The permitted SchemaTypes are:
 
-/**
- * A Validation function for local strategy password
- */
-var validateLocalStrategyPassword = function(password) {
-	return (this.provider !== 'local' || (password && password.length > 6));
-};
+// String
+// Number
+// Date
+// Buffer
+// Boolean
+// Mixed
+// ObjectId
+// Array
 
-/**
- * A Validation function for username
- */
-var validateUsername = function(username) {
-	return (username.match(/^[a-zA-Z0-9]+$/) !== null);
-};
+// When your application starts up, Mongoose automatically calls
+// ensureIndex for each defined index in your schema. While nice
+// for development, it is recommended this behavior be disabled
+// in production since index creation can cause a significant
+// performance impact. Disable the behavior by setting the
+// autoIndex option of your schema to false.
 
+var userSchema = new mongoose.Schema({
 
-/**
- * User Schema
- */
-var UserSchema = new Schema({
-	firstName: {
-		type: String,
-		trim: true,
-		default: ''
-	},
-	lastName: {
-		type: String,
-		trim: true,
-		default: ''
-	},
-	email: {
-		type: String,
-		trim: true,
-		unique: 'Account already exists with this email',
-		required: 'Please enter your email',
-		validate: {
-			validator: validateLocalStrategyProperty,
-			message: 'Please fill in your email'
-		},
-		match: [/.+\@.+\..+/, 'Please fill a valid email address']
-	},
-	username: {
-		type: String,
-		unique: true,
-		required: true,
-		lowercase: true,
-		validate: {
-			validator: validateUsername,
-			message: 'Please use a valid username'
-		}
-	},
-	passwordHash: {
-		type: String,
-		default: ''
-	},
-	salt: {
-		type: String
-	},
-	provider: {
-		type: String,
-		required: 'Provider is required',
-		default: 'local'
-	},
-	providerData: {},
-	additionalProvidersData: {},
-	roles: {
-		type: [{
-			type: String,
-			enum: ['user', 'admin', 'superuser']
-		}],
-		default: ['user']
-	},
-	language: {
-		type: String,
-		enum: ['en', 'fr', 'es', 'it', 'de'],
-		default: 'en',
-		required: 'User must have a language'
-	},
-	lastModified: {
-		type: Date
-	},
-	created: {
-		type: Date,
-		default: Date.now
-	},
+  email: { type: String, unique: true, index: true },
+  password: { type: String },
+  type: { type: String, default: 'admin' },
+  // EVERYONE'S AN ADMINISTRATOR IN EXAMPLE
+  // DEFAULT TYPE SHOULB BE 'user'!
+  // type: { type: String, default: 'user' },
 
-	/* For reset password */
-	resetPasswordToken: {
-		type: String
-	},
-	resetPasswordExpires: {
-		type: Date
-	},
-	token: String,
-	apiKey: {
-		type: String,
-		unique: true,
-		index: true,
-		sparse: true
-	}
-});
+  tokens: Array,
+  profile: {
+    name: { type: String, default: '' },
+    gender: { type: String, default: '' },
+    location: { type: String, default: '' },
+    website: { type: String, default: '' },
+    picture: { type: String, default: '' },
+    phone: {
+      work: { type: String, default: '' },
+      home: { type: String, default: '' },
+      mobile: { type: String, default: '' }
+    }
+  },
 
-UserSchema.virtual('displayName').get(function () {
-  	return this.firstName + ' ' + this.lastName;
-});
+  activity: {
+    date_established: { type: Date, default: Date.now },
+    last_logon: { type: Date, default: Date.now },
+    last_updated: { type: Date }
+  },
 
-UserSchema.plugin(mUtilities.timestamp, {
-	createdPath: 'created',
-	modifiedPath: 'lastModified',
-	useVirtual: false
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
+
+  verified: { type: Boolean, default: true },
+  verifyToken: { type: String },
+
+  enhancedSecurity: {
+    enabled: { type: Boolean, default: false },
+    type: { type: String },  // sms or totp
+    token: { type: String },
+    period: { type: Number },
+    sms: { type: String },
+    smsExpires: { type: Date }
+  }
+
 });
 
 /**
- * Hook a pre save method to hash the password
+ * Hash the password and sms token for security.
  */
-UserSchema.virtual('password').set(function (password) {
-  this.passwordHash = this.hashPassword(password);
+
+userSchema.pre('save', function (next) {
+
+  var user = this;
+  var SALT_FACTOR = 5;
+
+  if (!user.isModified('password')) {
+    return next();
+  } else {
+    bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
+      if (err) {
+        return next(err);
+      }
+      bcrypt.hash(user.password, salt, null, function (err, hash) {
+        if (err) {
+          return next(err);
+        }
+        user.password = hash;
+        next();
+      });
+    });
+  }
+
 });
-UserSchema.virtual('password').get(function () {
-  return this.passwordHash;
-});
-
 
 /**
- * Create instance method for hashing a password
+ * Check the user's password
  */
-UserSchema.methods.hashPassword = function(password) {
-	//Generate salt if it doesn't exist yet
-	if(!this.salt){
-		this.salt = crypto.randomBytes(64).toString('base64');
-	}
 
-	if (password) {
-		return crypto.pbkdf2Sync(password, new Buffer(this.salt, 'base64'), 10000, 128, 'sha1').toString('base64');
-	} else {
-		return password;
-	}
+userSchema.methods.comparePassword = function (candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+    if (err) {
+      return cb(err);
+    }
+    cb(null, isMatch);
+  });
 };
 
 /**
- * Create instance method for authenticating user
+ * Check user's SMS token
  */
-UserSchema.methods.authenticate = function(password) {
-	return this.password === this.hashPassword(password);
+
+userSchema.methods.compareSMS = function (candidateSMS, cb) {
+  bcrypt.compare(candidateSMS, this.enhancedSecurity.sms, function (err, isMatch) {
+    if (err) {
+      return cb(err);
+    }
+    cb(null, isMatch);
+  });
 };
 
 /**
- * Find possible not used username
+ *  Get a URL to a user's Gravatar email.
  */
-UserSchema.statics.findUniqueUsername = function(username, suffix, callback) {
-	var _this = this;
-	var possibleUsername = username + (suffix || '');
 
-	_this.findOne({
-		username: possibleUsername
-	}, function(err, user) {
-		if (!err) {
-			if (!user) {
-				return callback(possibleUsername);
-			} else {
-				return _this.findUniqueUsername(username, (suffix || 0) + 1, callback);
-			}
-		}
-		return callback(null);
-	});
+userSchema.methods.gravatar = function (size, defaults) {
+  if (!size) {
+    size = 200;
+  }
+  if (!defaults) {
+    defaults = 'retro';
+  }
+  if (!this.email) {
+    return 'https://gravatar.com/avatar/?s=' + size + '&d=' + defaults;
+  }
+  var md5 = crypto.createHash('md5').update(this.email);
+  return 'https://gravatar.com/avatar/' + md5.digest('hex').toString() + '?s=' + size + '&d=' + defaults;
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', userSchema);
 

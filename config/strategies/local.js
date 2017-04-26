@@ -9,35 +9,39 @@ var passport = require('passport'),
 
 module.exports = function () {
 	// Use local strategy
-	passport.use(new LocalStrategy({
-			usernameField: 'username',
-			passwordField: 'password'
-		},
-		function (req, username, password, done) {
-      console.log(req);
-			User.findOne({
-				$or: [
-					{'username': username},
-					{'email': username}
-				]
-			}, function (err, user) {
-				if (err) {
-					return done(err);
-				}
-				if (!user) {
-					return done(null, false, {
-						message: 'Unknown user or invalid password'
-					});
-				}
-				if (!user.authenticate(password)) {
-					return done(null, false, {
-						message: 'Unknown user or invalid password'
-					});
-				}
+// Use the LocalStrategy within Passport.
+//   Strategies in passport accept credentials (in this case, a username and password),
+//   and invoke a callback with a user object.
 
-				return done(null, user);
-			});
-		}
-	));
+passport.use(new LocalStrategy({ usernameField: 'email' }, function (email, password, done) {
+  User.findOne({ email: email }, function (err, user) {
+    if (!user) {
+      return done(null, false, { message: 'Invalid email or password.' });
+    }
+
+    // Only authenticate if the user is verified
+    if (user.verified) {
+      user.comparePassword(password, function (err, isMatch) {
+        if (isMatch) {
+
+          // update the user's record with login timestamp
+          user.activity.last_logon = Date.now();
+          user.save(function (err) {
+            if (err) {
+              return (err);
+            }
+          });
+
+          return done(null, user);
+        } else {
+          return done(null, false, { message: 'Invalid email or password.' });
+        }
+      });
+    } else {
+      return done(null, false, { message: 'Your account must be verified first!' });
+    }
+  });
+}));
+
 };
 

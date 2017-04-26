@@ -43,18 +43,8 @@ var questions = [
 	},
 	{
 		type: 'input',
-		name: 'firstName',
-		message: 'What should be the firstName for your admin account?'
-	},
-	{
-		type: 'input',
-		name: 'lastName',
-		message: 'What should be the lastName for your admin account?'
-	},
-	{
-		type: 'input',
-		name: 'username',
-		message: 'What should be the username for your admin account?'
+		name: 'name',
+		message: 'What is your name for for your admin account?'
 	},
 	{
 		type: 'password',
@@ -75,15 +65,11 @@ if(!fs.existsSync('./\.env')) {
 			inquirer.prompt(questions.slice(1)).then(function (answers) {
 
 				var email = answers['email'];
-				var username = answers['username'];
-				var pass = answers['password'];
-				var firstName = answers['firstName'];
-				var lastName = answers['lastName'];
+				var name = answers['name'];
+				var password = answers['password'];
 				delete answers['email'];
 				delete answers['password'];
-				delete answers['username'];
-				delete answers['firstName'];
-				delete answers['lastName'];
+				delete answers['name'];
 
 				envfile.stringify(answers, function (err, str) {
 
@@ -92,13 +78,12 @@ if(!fs.existsSync('./\.env')) {
 			  	console.log(chalk.green('Successfully created .env file'));
 
           var user = new User({
-						firstName: firstName,
-						lastName: lastName,
-						email: email,
-						username: username,
-						password: pass,
-						provider: 'local',
-						roles: ['admin', 'user']
+            email:email,
+					  password: password,
+            type: 'admin',
+            profile: {
+					    name: name
+            }
 					});
 
 					var promise = user.save(function (user, err) {

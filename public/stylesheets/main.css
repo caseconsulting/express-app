@@ -8156,9 +8156,6 @@ h2 {
 /**
  * Panel Headers Like Buttons
  */
-.panel-button:hover {
-  background: #cfcfcf;
-}
 a.noDecoration {
   text-decoration: none;
 }

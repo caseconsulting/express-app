@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var passport = require('passport'),
+    _ = require('lodash'),
 	User = require('mongoose').model('User'),
 	path = require('path'),
 	config = require('./config');
@@ -17,14 +18,12 @@ module.exports = function() {
 		done(null, user.id);
 	});
 
-	// Deserialize sessions
-	passport.deserializeUser(function(id, done) {
-		User.findOne({
-			_id: id
-		}, '-salt -password', function(err, user) {
-			done(err, user);
-		});
-	});
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
+
 
 	// Initialize strategies
 	config.getGlobbedFiles('./config/strategies/**/*.js').forEach(function(strategy) {

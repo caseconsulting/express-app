@@ -58,7 +58,9 @@ app.set('view engine', 'jade');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
+app.use(expressValidator());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressValidator());
 app.use(cookieParser());
 
 // Express MongoDB session storage
@@ -84,14 +86,6 @@ fs.readdirSync('./controllers').forEach(function (file) {
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(sassMiddleware({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: true, // true = .sass and false = .scss
-  sourceMap: true
-}));
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Body parsing middleware supporting
 // JSON, urlencoded, and multipart requests.
 // parse application/x-www-form-urlencoded
@@ -105,6 +99,15 @@ app.use(expressValidator());
 // in your app you need methodOverride.
 app.use(methodOverride());
 
+
+
+app.use(sassMiddleware({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public'),
+  indentedSyntax: true, // true = .sass and false = .scss
+  sourceMap: true
+}));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.title  = 'Express Starter App';
 app.locals.moment = require('moment');
