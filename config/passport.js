@@ -30,3 +30,34 @@ passport.deserializeUser(function (id, done) {
 		require(path.resolve(strategy))();
 	});
 };
+
+/**
+ * Login Required middleware.
+ */
+
+exports.isAuthenticated = function (req, res, next) {
+  // Is the user authenticated?
+  if (req.isAuthenticated()) {
+    // Does the user have enhanced security enabled?
+    if (req.user.enhancedSecurity.enabled) {
+      // If we already have validated the second factor it's
+      // a noop, otherwise redirect to capture the OTP.
+      if (req.session.passport.secondFactor === 'validated') {
+        return next();
+      } else {
+        // Verify their OTP code
+        res.redirect('/verify-setup');
+      }
+    } else {
+      // If enhanced security is disabled just continue.
+      return next();
+    }
+  } else {
+    req.session.attemptedURL = req.url;  // Save URL so we can redirect to it after authentication
+    res.set('X-Auth-Required', 'true');
+    req.flash('error', { msg: 'You must be logged in to reach that page.' });
+    res.redirect('/login');
+  }
+};
+
+

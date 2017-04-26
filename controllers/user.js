@@ -23,7 +23,7 @@ module.exports.controller = function (app) {
     // Check if user is already logged in
     if (req.user) {
       req.flash('info', { msg: 'You are already logged in!' });
-      return res.redirect('/home');
+      return res.redirect('/dashboard');
     }
     // Turn off login form if too many attempts
     var tooManyAttempts = req.session.tooManyAttempts || false;
@@ -165,7 +165,7 @@ module.exports.controller = function (app) {
               delete req.session.attemptedURL;
               res.redirect(redirectURL);
             } else {
-              res.redirect('/home');
+              res.redirect('/dashboard');
             }
 
           });
@@ -323,7 +323,7 @@ module.exports.controller = function (app) {
           return res.redirect('back');
         }
         req.flash('info', { msg: 'Your account verification is completed!' });
-        res.redirect('/home');
+        res.redirect('/dashboard');
       });
 
       // WORKFLOW COMPLETED
@@ -593,10 +593,10 @@ module.exports.controller = function (app) {
         // send the right welcome message
         if (config.twoFactor) {
           req.flash('warning', { msg: 'Welcome! We recommend turning on enhanced security in account settings.' });
-          res.redirect('/home');
+          res.redirect('/dashboard');
         } else {
           req.flash('info', { msg: 'Thanks for signing up! You rock!' });
-          res.redirect('/home');
+          res.redirect('/dashboard');
         }
 
       });
@@ -808,7 +808,7 @@ module.exports.controller = function (app) {
           return next(err);
         }
         req.flash('info', { msg: 'Thanks for signing up! You rock!' });
-        res.redirect('/home');
+        res.redirect('/dashboard');
       });
 
     });
@@ -868,7 +868,7 @@ module.exports.controller = function (app) {
                 delete req.session.attemptedURL;
                 return res.redirect(redirectURL);
               } else {
-                return res.redirect('/home');
+                return res.redirect('/dashboard');
               }
 
             });
@@ -945,7 +945,7 @@ module.exports.controller = function (app) {
                 delete req.session.attemptedURL;
                 return res.redirect(redirectURL);
               } else {
-                return res.redirect('/home');
+                return res.redirect('/dashboard');
               }
 
             });
@@ -1022,7 +1022,7 @@ module.exports.controller = function (app) {
                 delete req.session.attemptedURL;
                 return res.redirect(redirectURL);
               } else {
-                return res.redirect('/home');
+                return res.redirect('/dashboard');
               }
 
             });
@@ -1099,7 +1099,7 @@ module.exports.controller = function (app) {
                 delete req.session.attemptedURL;
                 return res.redirect(redirectURL);
               } else {
-                return res.redirect('/home');
+                return res.redirect('/dashboard');
               }
 
             });
