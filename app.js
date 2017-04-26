@@ -69,6 +69,12 @@ app.use(session({
 }));
 
 app.use(flash());
+app.use(function(req, res, next){
+    res.locals.success = req.flash('success');
+    res.locals.errors = req.flash('error');
+    res.locals.messages = require('express-messages')(req, res);
+    next();
+});
 
 // use passport session
 app.use(passport.initialize());
