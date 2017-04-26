@@ -1,0 +1,21 @@
+head
+  meta(charset='utf-8')
+  meta(name='x-csrf-token', content=_csrf)
+  meta(http-equiv='X-UA-Compatible', content='IE=edge')
+  meta(name='viewport', content='width=device-width, initial-scale=1.0')
+
+  block head
+  meta(name='author', content='#{author}')
+  meta(name='description', content='#{description}')
+  meta(name='keywords', content='#{keywords}')
+
+  //- Styles
+  link(rel='stylesheet', href='/lib/bootstrap/dist/css/bootstrap.min.css')
+  link(rel='stylesheet', href='/lib/font-awesome/css/font-awesome.min.css')
+  link(rel='stylesheet', href='/stylesheets/main.css')
+  link(rel='stylesheet', href='/stylesheets/style.css')
+  block styles
+
+  //- Fonts
+  link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Lora:400,400italic|Muli:normal,300|Playfair+Display:normalitalic')
+

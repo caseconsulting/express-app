@@ -2,9 +2,9 @@
 
 
 var express         = require('express');
-var expressLayouts  = require('express-ejs-layouts');
-var flash           = require('connect-flash');
 var session         = require('express-session');
+var expressValidator = require('express-validator');
+var flash           = require('express-flash');
 var favicon         = require('serve-favicon');
 var path            = require('path');
 var logger          = require('morgan');
@@ -16,6 +16,7 @@ var fs              = require('fs');
 var sassMiddleware  = require('node-sass-middleware');
 var MongoStore      = require('connect-mongo');
 var debug           = require('debug')('express-starter-app');
+var methodOverride  = require('method-override');
 
 //Load ENV vars from .env
 if ((process.env.NODE_ENV || 'development') === 'development') {
@@ -44,9 +45,6 @@ config.getGlobbedFiles('./models/**/*.js').forEach(function(modelPath) {
 
 require('./config/passport')();
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
 
 // set up debugging
@@ -55,11 +53,7 @@ app.locals.compileDebug=true;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-app.use(expressLayouts);
-
-app.set('layout', 'layouts/default');
+app.set('view engine', 'jade');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -76,12 +70,15 @@ app.use(session({
 }));
 
 app.use(flash());
-app.use(function(req, res, next){
-    res.locals.success = req.flash('success');
-    res.locals.errors = req.flash('error');
-    res.locals.messages = require('express-messages')(req, res);
-    next();
+
+// Dynamically include routes (via controllers)
+fs.readdirSync('./controllers').forEach(function (file) {
+  if (file.substr(-3) === '.js') {
+    var route = require('./controllers/' + file);
+    route.controller(app);
+  }
 });
+
 
 // use passport session
 app.use(passport.initialize());
@@ -95,8 +92,23 @@ app.use(sassMiddleware({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+// Body parsing middleware supporting
+// JSON, urlencoded, and multipart requests.
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Easy form validation!
+// This line must be immediately after bodyParser!
+app.use(expressValidator());
+
+// If you want to simulate DELETE and PUT
+// in your app you need methodOverride.
+app.use(methodOverride());
+
+
+app.locals.title  = 'Express Starter App';
+app.locals.moment = require('moment');
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -113,7 +125,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error/500');
 });
 
 module.exports = app;

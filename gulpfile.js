@@ -36,8 +36,6 @@ var paths = {
     'public/js/**/*.js',
     'public/js/**/*.map',
     'public/js/**/*.min.js',
-    'public/css/**/*.css',
-    'public/css/**/*.min.css',
     '!public/js/main.js',            // ! not
   ],
   js: [
@@ -45,6 +43,7 @@ var paths = {
     // Enable/disable as needed but only turn on
     // .js that is needed on *every* page. No bloat!
     // =========================================
+    'public/lib/jquery/dist/jquery.js',
     'public/lib/bootstrap/js/transition.js',
     'public/lib/bootstrap/js/alert.js',
     // 'public/lib/bootstrap/js/button.js',
@@ -57,8 +56,6 @@ var paths = {
     // 'public/lib/bootstrap/js/scrollspy.js',
     // 'public/lib/bootstrap/js/tab.js',
     // 'public/lib/bootstrap/js/affix.js'
-    // =========================================
-    //'public/lib/fastclick/lib/fastclick.js',
     //'public/js/main.js'
   ],
   lint: [
@@ -171,13 +168,9 @@ gulp.task('nodemon', ['build'], function (cb) {
  * Default Task
  */
 
-gulp.task('default', function () {
+gulp.task('default',['nodemon'], function () {
   gulp.watch(paths.js, ['scripts']);
   gulp.watch(paths.lint, ['lint', 'jscs']);
   gulp.watch('views/**/*.jade').on('change', plugins.refresh.changed);
 });
-
-/**
- * Run PageSpeed Insights
- */
 
