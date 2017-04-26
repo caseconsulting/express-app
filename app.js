@@ -58,6 +58,14 @@ app.set('view engine', 'jade');
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 
+// Express MongoDB session storage
+
+app.use(session({
+	secret: config.sessionSecret,
+	cookie: config.sessionCookie,
+	name: config.sessionName
+}));
+
 // use passport session
 app.use(passport.initialize());
 app.use(passport.session());
@@ -67,14 +75,6 @@ app.use(bodyParser.json());
 app.use(expressValidator());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator());
-
-// Express MongoDB session storage
-
-app.use(session({
-	secret: config.sessionSecret,
-	cookie: config.sessionCookie,
-	name: config.sessionName
-}));
 
 app.use(flash());
 
