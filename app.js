@@ -1,17 +1,20 @@
-var express = require('express');
-var expressLayouts = require('express-ejs-layouts');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var passport = require('passport');
-var fs = require('fs');
-var sassMiddleware = require('node-sass-middleware');
-var session = require('express-session');
-var MongoStore = require('connect-mongo');
-var flash = require('connect-flash');
+'use-strict';
+
+
+var express         = require('express');
+var expressLayouts  = require('express-ejs-layouts');
+var favicon         = require('serve-favicon');
+var path            = require('path');
+var logger          = require('morgan');
+var cookieParser    = require('cookie-parser');
+var bodyParser      = require('body-parser');
+var mongoose        = require('mongoose');
+var passport        = require('passport');
+var fs              = require('fs');
+var sassMiddleware  = require('node-sass-middleware');
+var session         = require('express-session');
+var MongoStore      = require('connect-mongo');
+var flash           = require('connect-flash');
 
 //Load ENV vars from .env
 if ((process.env.NODE_ENV || 'development') === 'development') {
