@@ -141,7 +141,7 @@ gulp.task('nodemon', ['build'], function (cb) {
   plugins.nodemon({
     script: 'bin/www',
     verbose: false,
-    env: { 'NODE_ENV': 'development', 'DEBUG': 'skeleton' },
+    env: { 'NODE_ENV': 'development' },
     // nodeArgs: ['--debug']
     ext: 'js',
     ignore: [

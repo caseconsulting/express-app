@@ -23,7 +23,7 @@ bower install
 create your initial user account
 
 ```sh
-grunt setup
+node ./bin/setup.js
 ```
 
 add to your .env file. [see the sample](env.example)
