@@ -26,7 +26,13 @@ create your initial user account
 node ./bin/setup.js
 ```
 
-add to your .env file. [see the sample](env.example)
+Add to your generated .env file. [see the sample](env.example)
+
+To show all gulp tasks run:
+
+```sh
+gulp list
+```
 
 ## Running
 
@@ -35,11 +41,3 @@ add to your .env file. [see the sample](env.example)
 ```sh
 gulp
 ```
-
-### Production
-
-```sh
-
-```
-
-

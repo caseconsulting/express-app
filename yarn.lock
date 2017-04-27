@@ -1842,6 +1842,12 @@ gulp-sourcemaps@^2.6.0:
     through2 "2.X"
     vinyl "1.X"
 
+gulp-task-listing@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/gulp-task-listing/-/gulp-task-listing-1.0.1.tgz#8d3d88a93381715d80d66d08d9c55587d889f2ba"
+  dependencies:
+    chalk "*"
+
 gulp-uglify@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/gulp-uglify/-/gulp-uglify-2.1.2.tgz#6db85b1d0ee63d18058592b658649d65c2ec4541"

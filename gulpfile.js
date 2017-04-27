@@ -12,6 +12,7 @@ var del           = require('del');
 var gulp          = require('gulp');
 var terminus      = require('terminus');
 var runSequence   = require('run-sequence');
+var taskListing   = require('gulp-task-listing');
 
 /**
  * Banner
@@ -174,3 +175,4 @@ gulp.task('default',['nodemon'], function () {
   gulp.watch('views/**/*.jade').on('change', plugins.refresh.changed);
 });
 
+gulp.task('list', taskListing);
