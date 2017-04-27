@@ -1,6 +1,7 @@
 'use-strict';
 
-
+var cookieParser    = require('cookie-parser');
+var csrf            = require('csurf');
 var express         = require('express');
 var session         = require('express-session');
 var expressValidator = require('express-validator');
@@ -8,14 +9,15 @@ var flash           = require('express-flash');
 var favicon         = require('serve-favicon');
 var path            = require('path');
 var logger          = require('morgan');
-var cookieParser    = require('cookie-parser');
 var bodyParser      = require('body-parser');
+var morgan          = require('morgan');
 var mongoose        = require('mongoose');
 var passport        = require('passport');
 var fs              = require('fs');
 var MongoStore      = require('connect-mongo');
 var debug           = require('debug')('express-starter-app');
 var methodOverride  = require('method-override');
+var helmet          = require('helmet');
 
 //Load ENV vars from .env
 if ((process.env.NODE_ENV || 'development') === 'development') {
@@ -46,34 +48,64 @@ require('./config/passport')();
 
 var app = express();
 
-// set up debugging
-app.locals.pretty = true;
-app.locals.compileDebug=true;
+//Load ENV vars from .env
+if ((process.env.NODE_ENV || 'development') === 'development') {
+  app.use(morgan('dev'));
+  // Turn off caching in development
+  // This sets the Cache-Control HTTP header to no-store, no-cache,
+  // which tells browsers not to cache anything.
+  app.use(helmet.noCache());
+  // Jade options: Don't minify html, debug intrumentation
+  app.locals.pretty=true;
+  app.locals.compileDebug=true;
+
+}
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
 
-// Express MongoDB session storage
+app.set('etag', true);
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+
+app.use(expressValidator());
+// If you want to simulate DELETE and PUT
+// in your app you need methodOverride.
+app.use(methodOverride());
 
 app.use(session({
-	secret: config.sessionSecret,
-	cookie: config.sessionCookie,
-	name: config.sessionName
+	secret: 'change your secret',
+  name: 'express-starter-app',
+  cookie: {}
 }));
+
+
 
 // use passport session
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
 
+// Security Settings
+app.disable('x-powered-by');          // Don't advertise our server type
+app.use(csrf({cookie: true}));                      // Prevent Cross-Site Request Forgery
+app.use(helmet());                    // frameguard, hide powered by, ienoopen, nosniff, xssfilter
+
 app.use(bodyParser.json());
-app.use(expressValidator());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(expressValidator());
+
+// Keep user, csrf token
+app.use(function (req, res, next) {
+  res.locals.user = req.user;
+  res.locals._csrf = req.csrfToken();
+  next();
+});
+
 
 app.use(flash());
 
@@ -95,11 +127,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // This line must be immediately after bodyParser!
 app.use(expressValidator());
 
-// If you want to simulate DELETE and PUT
-// in your app you need methodOverride.
-app.use(methodOverride());
 
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.title  = 'Express Starter App';
 app.locals.moment = require('moment');
