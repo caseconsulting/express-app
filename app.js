@@ -13,7 +13,6 @@ var bodyParser      = require('body-parser');
 var mongoose        = require('mongoose');
 var passport        = require('passport');
 var fs              = require('fs');
-var sassMiddleware  = require('node-sass-middleware');
 var MongoStore      = require('connect-mongo');
 var debug           = require('debug')('express-starter-app');
 var methodOverride  = require('method-override');
