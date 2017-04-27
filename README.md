@@ -33,6 +33,11 @@ To show all gulp tasks run:
 ```sh
 gulp list
 ```
+or show all tasks with comments:
+
+```sh
+gulp task-list
+```
 
 ## Running
 

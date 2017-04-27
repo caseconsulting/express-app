@@ -15,6 +15,8 @@ var terminus      = require('terminus');
 var runSequence   = require('run-sequence');
 var taskListing   = require('gulp-task-listing');
 
+require('gulp-task-list')(gulp);
+
 /**
  * Banner
  */
@@ -66,7 +68,16 @@ var paths = {
     'models/*.js',
     'app.js',
     'gulpfile.js'
+  ],
+  less: [
+    'less/bootstrap.less',
+    'less/style.less',
+    'less/main.less',
+    'less/page-analysis.less',
+    'less/page-colors.less',
+    'less/page-dashboard.less'
   ]
+
 };
 
 /**
@@ -76,6 +87,30 @@ var paths = {
 gulp.task('clean', function () {
   return del(paths.clean);
 });
+
+/**
+ * Process CSS
+ */
+
+gulp.task('styles', function () {
+  return gulp.src(paths.less)               // Read in Less files
+    .pipe(plugins.less({ strictMath: true }))     // Compile Less files
+    .pipe(plugins.autoprefixer({                  // Autoprefix for target browsers
+      browsers: ['last 2 versions'],
+      cascade: true
+    }))
+    .pipe(plugins.csscomb())                      // Coding style formatter for CSS
+    .pipe(plugins.csslint('.csslintrc'))          // Lint CSS
+    .pipe(plugins.csslint.formatter())             // Report issues
+    .pipe(plugins.rename({ suffix: '.min' }))     // Add .min suffix
+    .pipe(plugins.csso())                         // Minify CSS
+    .pipe(plugins.header(banner, { pkg : pkg }))  // Add banner
+    .pipe(plugins.size({ title: 'CSS:' }))        // What size are we at?
+    .pipe(gulp.dest('./public/css'))        // Save minified CSS
+    .pipe(plugins.livereload());                  // Initiate a reload
+});
+
+
 
 /**
  * Process Scripts
@@ -143,8 +178,8 @@ gulp.task('jscs', function () {
 gulp.task('build', function (cb) {
   runSequence(
     'clean',             // first clean
-    ['lint', 'jscs','images'],    // then lint and jscs in parallel
-    ['scripts' ],        // etc.
+    ['lint', 'jscs'],    // then lint and jscs in parallel
+    ['styles','scripts','images' ],        // etc.
     cb);
 });
 
@@ -189,6 +224,7 @@ gulp.task('nodemon', ['build'], function (cb) {
  */
 
 gulp.task('default',['nodemon'], function () {
+  gulp.watch(paths.less, ['styles']);
   gulp.watch(paths.js, ['scripts']);
   gulp.watch(paths.lint, ['lint', 'jscs']);
   gulp.watch('views/**/*.jade').on('change', plugins.refresh.changed);
