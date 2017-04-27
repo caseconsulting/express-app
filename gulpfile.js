@@ -10,6 +10,7 @@
 var plugins       = require('gulp-load-plugins')({ lazy: true });
 var del           = require('del');
 var gulp          = require('gulp');
+var pngquant      = require('imagemin-pngquant');
 var terminus      = require('terminus');
 var runSequence   = require('run-sequence');
 var taskListing   = require('gulp-task-listing');
@@ -91,6 +92,23 @@ gulp.task('scripts', function () {
     .pipe(gulp.dest('./public/js'))         // Save minified .js
     .pipe(plugins.refresh());                  // Initiate a reload
 });
+/**
+ * Process Images
+ */
+
+gulp.task('images', function () {
+  return gulp.src('images/**/*')            // Read images
+    .pipe(plugins.changed('./public/images'))        // Only process new/changed
+    .pipe(plugins.imagemin({                      // Compress images
+      progressive: true,
+      optimizationLevel: 3,
+      interlaced: true,
+      svgoPlugins: [{ removeViewBox: false }],
+      use: [pngquant()]
+    }))
+    .pipe(gulp.dest('./public/images'));       // Write processed images
+});
+
 
 /**
  * JSHint Files
@@ -116,6 +134,7 @@ gulp.task('jscs', function () {
     .pipe(terminus.devnull({ objectMode: true }));
 });
 
+
 /**
  * Build Task
  *   - Build all the things...
@@ -124,7 +143,7 @@ gulp.task('jscs', function () {
 gulp.task('build', function (cb) {
   runSequence(
     'clean',             // first clean
-    ['lint', 'jscs'],    // then lint and jscs in parallel
+    ['lint', 'jscs','images'],    // then lint and jscs in parallel
     ['scripts' ],        // etc.
     cb);
 });
