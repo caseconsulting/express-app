@@ -54,9 +54,9 @@ var questions = [
 ];
 
 if(!fs.existsSync('./\.env')) {
-	console.log(chalk.green('\n\nWelcome to the Express Starter App'));
+  console.log(chalk.green('\nWelcome to the ' + config.app.title));
 
-	console.log(chalk.green('You should only run this the first time you run Express Starter App\n--------------------------------------------------\n\n'));
+	console.log(chalk.green('You should only run this the first time you run ' + config.app.title'\n--------------------------------------------------\n\n'));
 
 	inquirer.prompt([questions[0]]).then(function (confirmAns) {
 
@@ -93,14 +93,14 @@ if(!fs.existsSync('./\.env')) {
 
 						console.log(chalk.green('Successfully created user'));
 
-						console.log(chalk.green('Express Starter App is configured!'));
+						console.log(chalk.green(config.app.title + ' is configured!'));
 
 					  process.exit(1);
 					});
 				});
 			});
 		} else {
-			console.log(chalk.green('Express Starter App is configured!'));
+			console.log(chalk.green(config.app.title + ' is configured!'));
 		}
 	});
 } else {

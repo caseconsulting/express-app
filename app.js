@@ -125,7 +125,7 @@ app.use(expressValidator());
 
 
 
-app.locals.title  = 'Express Starter App';
+app.locals.application  = config.app.title
 app.locals.moment = require('moment');
 
 

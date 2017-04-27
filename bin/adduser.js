@@ -42,8 +42,7 @@ var questions = [
 }
 ];
 
-console.log(chalk.green('\n\nWelcome to the Express Starter App'));
-console.log(chalk.green('You should only run this the first time you run Express Starter App\n--------------------------------------------------\n\n'));
+console.log(chalk.green('\nWelcome to the ' + config.app.title));
 
 inquirer.prompt([questions[0]]).then(function (confirmAns) {
 
