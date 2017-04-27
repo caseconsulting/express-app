@@ -2,16 +2,20 @@
 
 'use strict';
 
-process.env.NODE_ENV='production';
+process.env.NODE_ENV='development';
 
 var mongoose = require('mongoose'),
     inquirer = require('inquirer'),
     path     = require('path'),
-    config  = require('../config/config'),
-    chalk = require('chalk');
+    config   = require('../config/config'),
+    utils    = require('../config/utils'),
+    chalk    = require('chalk');
 
-require('../app');
-//require('../config/passport');
+mongoose.connect(config.db.uri);
+
+utils.getGlobbedFiles('./models/**/*.js').forEach(function(modelPath) {
+	require(path.resolve(modelPath));
+});
 
 var User = mongoose.model('User');
 

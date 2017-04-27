@@ -29,16 +29,8 @@ var utils = require('./config/utils'),
     config = require('./config/config');
 
 // Bootstrap db connection
-var db = mongoose.connect(config.db.uri, config.db.options, function (err) {
-	if (err) {
-		console.error(chalk.red('Could not connect to MongoDB!'));
-		console.log(chalk.red(err));
-	}
-});
-mongoose.connection.on('error', function (err) {
-	console.error(chalk.red('MongoDB connection error: ' + err));
-	process.exit(-1);
-});
+mongoose.connect(config.db.uri);
+var db = mongoose.connection
 
 // Globbing model files
 utils.getGlobbedFiles('./models/**/*.js').forEach(function(modelPath) {
