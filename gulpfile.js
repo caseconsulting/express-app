@@ -73,8 +73,8 @@ var paths = {
     'less/bootstrap.less',
     'less/style.less',
     'less/main.less',
+    'less/colors.less',
     'less/page-analysis.less',
-    'less/page-colors.less',
     'less/page-dashboard.less'
   ]
 
