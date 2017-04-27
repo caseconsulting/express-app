@@ -39,6 +39,12 @@ or show all tasks with comments:
 gulp task-list
 ```
 
+to add additional test users
+
+```sh
+node ./bin/adduser.js
+```
+
 ## Running
 
 ### Locally

@@ -79,17 +79,20 @@ app.use(expressValidator());
 // in your app you need methodOverride.
 app.use(methodOverride());
 
+var hour = 3600000
 app.use(session({
 	secret: 'change your secret',
   name: 'express-starter-app',
-  cookie: {}
+  cookie: {
+    expires: new Date(Date.now() + hour * 8),
+    maxAge: hour*8
+  }
 }));
-
-
 
 // use passport session
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(cookieParser());
 
 // Security Settings

@@ -61,4 +61,38 @@ module.exports.isAuthenticated = function (req, res, next) {
   }
 };
 
+/**
+ * Authorization Required middleware.
+ */
+
+module.exports.isAuthorized = function (req, res, next) {
+  var provider = req.path.split('/').slice(-1)[0];
+  if (_.find(req.user.tokens, { kind: provider })) {
+    // we found the provider so just continue
+    next();
+  }
+};
+
+/**
+ * Check if the account is an Administrator
+ */
+
+module.exports.isAdministrator = function (req, res, next) {
+  // make sure we are logged in first
+  if (req.isAuthenticated()) {
+    // user must be be an administrator
+    if (req.user.type !== 'admin') {
+      req.flash('error', { msg: 'You must be an Administrator reach that page.' });
+      return res.redirect('/api');
+    } else {
+      return next();
+    }
+  } else {
+    req.flash('error', { msg: 'You must be logged in to reach that page.' });
+    res.redirect('/login');
+  }
+};
+
+
+
 
