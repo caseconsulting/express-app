@@ -33,7 +33,6 @@
     "inquirer": "^3.0.6",
     "jade": "^1.11.0",
     "lodash": "^4.17.4",
-    "main-bower-files": "^2.13.1",
     "method-override": "^2.3.8",
     "moment": "^2.18.1",
     "mongoose": "4.4.19",

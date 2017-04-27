@@ -24,8 +24,9 @@ if ((process.env.NODE_ENV || 'development') === 'development') {
 	require('dotenv').config();
 }
 
-var config = require('./config/config'),
-    chalk = require('chalk')
+var utils = require('./config/utils'),
+    chalk = require('chalk'),
+    config = require('./config/config');
 
 // Bootstrap db connection
 var db = mongoose.connect(config.db.uri, config.db.options, function (err) {
@@ -40,7 +41,7 @@ mongoose.connection.on('error', function (err) {
 });
 
 // Globbing model files
-config.getGlobbedFiles('./models/**/*.js').forEach(function(modelPath) {
+utils.getGlobbedFiles('./models/**/*.js').forEach(function(modelPath) {
 	require(path.resolve(modelPath));
 });
 
