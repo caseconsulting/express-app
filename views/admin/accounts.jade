@@ -195,8 +195,8 @@ block scripts
             headers: { 'X-CSRF-Token': $('meta[name="x-csrf-token"]').attr('content')},
             url: '/accountlist/' + userid
           }).done(function( response ) {
-            // Check for a successful (blank) response
-            if (response.msg === '') {
+            // not quite sure what is going on with the error: null stuff yet ...
+            if (response.msg == null || response.msg === '' || response.msg === 'error: null') {
             }
             else {
               alert('Error: ' + response.msg);
