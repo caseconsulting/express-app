@@ -70,14 +70,9 @@ app.use(expressValidator());
 app.use(methodOverride());
 
 var hour = 3600000;
-app.use(session({
-	secret: 'change your secret',
-  name: 'express-starter-app',
-  cookie: {
-    expires: new Date(Date.now() + hour * 8),
-    maxAge: hour*8
-  }
-}));
+app.use(session(
+  config.session
+));
 
 // use passport session
 app.use(passport.initialize());
