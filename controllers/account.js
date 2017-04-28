@@ -10,7 +10,6 @@ var debug         = require('debug')('skeleton');       // https://github.com/vi
 var utils         = require('../config/utils');
 var config        = require('../config/config');
 var passport      = require('passport');
-var nodemailer    = require('nodemailer');
 var passportConf  = require('../config/passport');
 
 
