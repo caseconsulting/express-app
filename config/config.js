@@ -1,6 +1,6 @@
 'use strict';
 
-const _ = require('lodash');
+var _ = require('lodash');
 /**
  * Load app configurations
  */

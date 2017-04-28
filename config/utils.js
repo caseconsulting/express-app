@@ -3,11 +3,7 @@
 /**
  * Module dependencies.
  */
-var gruntFile = require('grunt').file,
-	path = require('path'),
-	fs = require('fs');
-
-var exists = require('path-exists').sync;
+var gruntFile = require('grunt').file;
 
 /**
  * Get files by glob patterns

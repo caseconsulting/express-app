@@ -8,14 +8,11 @@ var expressValidator = require('express-validator');
 var flash           = require('express-flash');
 var favicon         = require('serve-favicon');
 var path            = require('path');
-var logger          = require('morgan');
 var bodyParser      = require('body-parser');
 var morgan          = require('morgan');
 var mongoose        = require('mongoose');
 var passport        = require('passport');
 var fs              = require('fs');
-var MongoStore      = require('connect-mongo');
-var debug           = require('debug')('express-starter-app');
 var methodOverride  = require('method-override');
 var helmet          = require('helmet');
 
@@ -30,7 +27,7 @@ var utils = require('./config/utils'),
 
 // Bootstrap db connection
 mongoose.connect(config.db.uri);
-var db = mongoose.connection
+var db = mongoose.connection;
 
 // Globbing model files
 utils.getGlobbedFiles('./models/**/*.js').forEach(function(modelPath) {
@@ -72,7 +69,7 @@ app.use(expressValidator());
 // in your app you need methodOverride.
 app.use(methodOverride());
 
-var hour = 3600000
+var hour = 3600000;
 app.use(session({
 	secret: 'change your secret',
   name: 'express-starter-app',
@@ -125,7 +122,7 @@ app.use(expressValidator());
 
 
 
-app.locals.application  = config.app.title
+app.locals.application  = config.app.title;
 app.locals.moment = require('moment');
 
 

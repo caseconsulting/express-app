@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var morgan = require('morgan');
+//var morgan = require('morgan');
 var config = require('./config');
 var fs = require('fs-extra');
 

@@ -7,8 +7,7 @@ var passport = require('passport'),
     _ = require('lodash'),
 	User = require('mongoose').model('User'),
 	path = require('path'),
-	config = require('./config'),
-  utils = require('./utils');;
+  utils = require('./utils');
 
 
 // Serialize sessions
