@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "istanbul cover _mocha -- --requrie babel-register test",
+    "test": "istanbul cover _mocha",
     "init": "node ./bin/setup.js"
   },
   "dependencies": {
