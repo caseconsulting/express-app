@@ -45,7 +45,7 @@ gulp task-list
 to add additional test users
 
 ```sh
-node ./bin/adduser.js
+yarn user
 ```
 
 If you want to add other images you can take the raw, unresized version, put it in ./images/ and run:
