@@ -62,9 +62,11 @@ var userSchema = new mongoose.Schema({
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date },
 
+  // TODO:  add email based verification in the future
   verified: { type: Boolean, default: true },
   verifyToken: { type: String },
 
+  // TODO:  add enhanced security features, such as two facter auth in the future
   enhancedSecurity: {
     enabled: { type: Boolean, default: false },
     type: { type: String },  // sms or totp
