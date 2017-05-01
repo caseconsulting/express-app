@@ -7,7 +7,7 @@
 var config        = require('../config/config');
 var _             = require('lodash');
 var async         = require('async');
-var debug         = require('debug')('express-starter-app');       // https://github.com/visionmedia/debug
+var debug         = require('debug')('http');       // https://github.com/visionmedia/debug
 var request       = require('request');         // https://github.com/mikeal/request
 var passport      = require('passport');
 var querystring   = require('querystring');

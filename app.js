@@ -15,6 +15,8 @@ var passport        = require('passport');
 var fs              = require('fs');
 var methodOverride  = require('method-override');
 var helmet          = require('helmet');
+var errorHandler    = require('errorhandler');
+var debug           = require('debug')('http');
 
 //Load ENV vars from .env
 if ((process.env.NODE_ENV || 'development') === 'development') {
@@ -69,7 +71,6 @@ app.use(expressValidator());
 // in your app you need methodOverride.
 app.use(methodOverride());
 
-var hour = 3600000;
 app.use(session(
   config.session
 ));
@@ -121,23 +122,95 @@ app.locals.application  = config.app.title;
 app.locals.moment = require('moment');
 
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+/**
+ * Error Handling
+ */
+
+// If nothing responded above we will assume a 404
+// (since no routes responded or static assets found)
+
+// Tests:
+//   $ curl http://localhost:3000/notfound
+//   $ curl http://localhost:3000/notfound -H "Accept: application/json"
+//   $ curl http://localhost:3000/notfound -H "Accept: text/plain"
+
+// Handle 404 Errors
+app.use(function (req, res, next) {
+  res.status(404);
+  debug('404 Warning. URL: ' + req.url);
+
+  // Respond with html page
+  if (req.accepts('html')) {
+    res.render('error/404', { url: req.url });
+    return;
+  }
+
+  // Respond with json
+  if (req.accepts('json')) {
+    res.send({ error: 'Not found!' });
+    return;
+  }
+
+  // Default to plain-text. send()
+  res.type('txt').send('Error: Not found!');
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// True error-handling middleware requires an arity of 4,
+// aka the signature (err, req, res, next).
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error/500');
+// Handle 403 Errors
+app.use(function (err, req, res, next) {
+  if (err.status === 403) {
+    res.status(err.status);
+    debug('403 Not Allowed. URL: ' + req.url + ' Err: ' + err);
+
+    // Respond with HTML
+    if (req.accepts('html')) {
+      res.render('error/403', {
+        error: err,
+        url: req.url
+      });
+      return;
+    }
+
+    // Respond with json
+    if (req.accepts('json')) {
+      res.send({ error: 'Not Allowed!' });
+      return;
+    }
+
+    // Default to plain-text. send()
+    res.type('txt').send('Error: Not Allowed!');
+
+  } else {
+    // Since the error is not a 403 pass it along
+    return next(err);
+  }
 });
+
+// Production 500 error handler (no stacktraces leaked to public!)
+if (app.get('env') === 'production') {
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    debug('Error: ' + (err.status || 500).toString().red.bold + ' ' + err);
+    res.render('error/500', {
+      error: {}  // don't leak information
+    });
+  });
+}
+
+// Development 500 error handler
+if (app.get('env') === 'development') {
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    debug('Error: ' + (err.status || 500).toString().red.bold + ' ' + err);
+    res.render('error/500', {
+      error: err
+    });
+  });
+  // Final error catch-all just in case...
+  app.use(errorHandler());
+}
 
 module.exports = app;
 

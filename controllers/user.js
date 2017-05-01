@@ -1,7 +1,7 @@
 'use strict';
 
 var User          = require('../models/user');
-var debug         = require('debug')('express-starter-app');
+var debug         = require('debug')('http');
 var async         = require('async');
 var crypto        = require('crypto');
 var config        = require('../config/config');
