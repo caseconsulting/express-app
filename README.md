@@ -77,4 +77,3 @@ yarn test
 3. perhaps add oauth
 4. add more tests
 5. add editing of another user's profile
-6. add istanbul for code coverage
