@@ -67,7 +67,7 @@ gulp
 Simply type:
 
 ```sh
-mocha
+yarn test
 ```
 
 ## Todo

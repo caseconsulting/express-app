@@ -7,3 +7,4 @@ access.log
 api_keys.js
 .DS_Store
 *.env
+coverage
