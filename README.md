@@ -26,7 +26,7 @@ bower install
 create your initial user account
 
 ```sh
-node ./bin/setup.js
+yarn setup
 ```
 
 Add to your generated .env file. [see the sample](env.example)

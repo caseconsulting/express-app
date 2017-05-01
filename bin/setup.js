@@ -56,7 +56,7 @@ var questions = [
 if(!fs.existsSync('./\.env')) {
   console.log(chalk.green('\nWelcome to the ' + config.app.title));
 
-	console.log(chalk.green('You should only run this the first time you run ' + config.app.title'\n--------------------------------------------------\n\n'));
+	console.log(chalk.green('You should only run this the first time you run ' + config.app.title + '\n--------------------------------------------------\n\n'));
 
 	inquirer.prompt([questions[0]]).then(function (confirmAns) {
 
