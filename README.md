@@ -16,6 +16,7 @@
 npm install --global gulp-cli
 npm install --global bower
 npm install --global yarn
+npm install --global istanbul
 git clone git@github.com:caseconsulting/express-starter-app.git
 cd express-starter-app
 yarn install
@@ -76,3 +77,4 @@ mocha
 3. perhaps add oauth
 4. add more tests
 5. add editing of another user's profile
+6. add istanbul for code coverage
