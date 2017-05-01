@@ -16,7 +16,7 @@ require('../app');
 require('../config/passport');
 
 var User = mongoose.model('User');
-require('../models/user.js');
+//require('../models/user.js');
 
 var questions = [
 	{
@@ -88,7 +88,8 @@ if(!fs.existsSync('./\.env')) {
 
 					var promise = user.save(function (user, err) {
 						if (err) {
-							return console.error(chalk.red(err));
+							console.error(chalk.red(err));
+              process.exit(0);
 						}
 
 						console.log(chalk.green('Successfully created user'));
