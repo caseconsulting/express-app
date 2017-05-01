@@ -75,6 +75,7 @@
     "jshint-stylish": "^2.2.1",
     "mocha": "^3.3.0",
     "run-sequence": "^1.2.2",
+    "supertest": "^3.0.0",
     "terminus": "^1.1.0"
   }
 }

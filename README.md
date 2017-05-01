@@ -3,6 +3,7 @@
 1. [Prerequisites](#prerequisites)
 1. [Installation](#installation)
 1. [Running](#running)
+1. [Todo](#todo)
 
 ## Prerequisites
 
@@ -58,3 +59,11 @@ gulp images
 ```sh
 gulp
 ```
+
+## Todo
+
+1. set up email
+2. add 'forgot' controller and logic
+3. perhaps add oauth
+4. add more tests
+5. add editing of another user's profile

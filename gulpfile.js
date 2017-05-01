@@ -64,7 +64,8 @@ var paths = {
   ],
   lint: [
     'config/**/*.js',
-    'routes/*.js',
+    'tests/**/*.js',
+    'controllers/*.js',
     'models/*.js',
     'app.js',
     'gulpfile.js'
