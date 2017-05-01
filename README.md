@@ -3,6 +3,7 @@
 1. [Prerequisites](#prerequisites)
 1. [Installation](#installation)
 1. [Running](#running)
+1. [Testing](#testing)
 1. [Todo](#todo)
 
 ## Prerequisites
@@ -58,6 +59,14 @@ gulp images
 
 ```sh
 gulp
+```
+
+## Testing
+
+Simply type:
+
+```sh
+mocha
 ```
 
 ## Todo
